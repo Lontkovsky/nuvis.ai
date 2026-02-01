@@ -25,6 +25,7 @@ export const VideoSection: React.FC<VideoSectionProps> = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useReducedMotion();
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+  const [videoError, setVideoError] = useState(false);
   const [shouldLoad, setShouldLoad] = useState(preload);
 
   useEffect(() => {
@@ -50,21 +51,39 @@ export const VideoSection: React.FC<VideoSectionProps> = ({
   useEffect(() => {
     if (prefersReducedMotion && videoRef.current) {
       videoRef.current.pause();
+    } else if (!prefersReducedMotion && videoRef.current && isVideoLoaded && !videoError) {
+      // Ensure video is playing if it should be
+      videoRef.current.play().catch(err => {
+        // Many browsers block autoplay unless muted, but we are muted.
+        // Still, some might block it or it might fail if the element is removed.
+        if (err.name !== 'AbortError') {
+          console.warn(`Video play failed for ${videoSrc}:`, err);
+        }
+      });
     }
-  }, [prefersReducedMotion]);
+  }, [prefersReducedMotion, isVideoLoaded, videoError, videoSrc]);
+
+  const handleVideoError = (e: React.SyntheticEvent<HTMLVideoElement, Event>) => {
+    console.error(`Video error for ${videoSrc}:`, e);
+    setVideoError(true);
+  };
+
+  const handleLoadedData = () => {
+    setIsVideoLoaded(true);
+  };
 
   return (
     <section 
       id={id}
       ref={containerRef}
       className={cn(
-        "relative min-h-screen w-full flex items-center justify-center overflow-hidden",
+        "relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-background",
         containerClassName
       )}
     >
       {/* Background Video */}
-      <div className="absolute inset-0 z-0 bg-background">
-        {shouldLoad && (
+      <div className="absolute inset-0 z-0">
+        {shouldLoad && !videoError && (
           <video
             ref={videoRef}
             autoPlay={!prefersReducedMotion}
@@ -73,27 +92,24 @@ export const VideoSection: React.FC<VideoSectionProps> = ({
             playsInline
             poster={posterSrc}
             preload={preload ? "auto" : "metadata"}
-            onLoadedData={() => setIsVideoLoaded(true)}
+            onLoadedData={handleLoadedData}
+            onError={handleVideoError}
             className={cn(
               "absolute inset-0 w-full h-full object-cover transition-opacity duration-1000",
               isVideoLoaded ? "opacity-100" : "opacity-0"
             )}
           >
-            {/* 
-                Add additional sources here for better performance/compatibility:
-                <source src={videoSrc.replace('.mp4', '.webm')} type="video/webm" />
-            */}
             <source src={videoSrc} type="video/mp4" />
           </video>
         )}
         
-        {/* Fallback Poster for Reduced Motion or While Loading */}
+        {/* Fallback Poster for Reduced Motion, While Loading, or Error */}
         <img 
           src={posterSrc} 
           alt="" 
           className={cn(
             "absolute inset-0 w-full h-full object-cover transition-opacity duration-1000",
-            (prefersReducedMotion || !isVideoLoaded) ? "opacity-100" : "opacity-0"
+            (prefersReducedMotion || !isVideoLoaded || videoError) ? "opacity-100" : "opacity-0"
           )}
           aria-hidden="true"
         />
