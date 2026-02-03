@@ -22,10 +22,6 @@ const Home = () => {
       
       {/* Hero Section */}
       <VideoSection 
-        videoSrc="/videos/panda.mp4"
-        posterSrc="/videos/01-hero-poster.png"
-        preload={true}
-        respectReducedMotion={false}
         id="hero"
       >
         <div className="flex flex-col items-center text-center">
@@ -91,9 +87,6 @@ const Home = () => {
 
       {/* Problem Section */}
       <VideoSection 
-        videoSrc="/videos/02-problem.mp4"
-        posterSrc="/videos/02-problem.jpg"
-        respectReducedMotion={false}
         id="problem"
       >
         <div className="max-w-4xl mx-auto">
@@ -141,9 +134,6 @@ const Home = () => {
 
       {/* How It Works Section */}
       <VideoSection 
-        videoSrc="/videos/03-howitworks.mp4"
-        posterSrc="/videos/03-howitworks.jpg"
-        respectReducedMotion={false}
         id="how-it-works"
       >
         <div className="max-w-6xl mx-auto">
@@ -259,9 +249,6 @@ const Home = () => {
 
       {/* Real-Time Transcription Section */}
       <VideoSection 
-        videoSrc="/videos/04-transcription.mp4"
-        posterSrc="/videos/04-transcription.jpg"
-        respectReducedMotion={false}
         id="features"
       >
         <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-16">
@@ -328,9 +315,6 @@ const Home = () => {
 
       {/* Screen-Aware Assistance Section */}
       <VideoSection 
-        videoSrc="/videos/05-screenaware.mp4"
-        posterSrc="/videos/05-screenaware.jpg"
-        respectReducedMotion={false}
         id="screen-aware"
       >
         <div className="max-w-6xl mx-auto">
@@ -403,9 +387,6 @@ const Home = () => {
 
       {/* Invisible During Screen Share Section */}
       <VideoSection 
-        videoSrc="/videos/06-screenshare.mp4"
-        posterSrc="/videos/06-screenshare.jpg"
-        respectReducedMotion={false}
         id="screen-share"
       >
         <div className="max-w-6xl mx-auto flex flex-col lg:flex-row-reverse items-center gap-16">
@@ -467,9 +448,6 @@ const Home = () => {
 
       {/* Privacy & Control Section */}
       <VideoSection 
-        videoSrc="/videos/07-privacy.mp4"
-        posterSrc="/videos/07-privacy.jpg"
-        respectReducedMotion={false}
         id="privacy"
       >
         <div className="max-w-6xl mx-auto">
@@ -585,9 +563,6 @@ const Home = () => {
 
       {/* Pricing Section */}
       <VideoSection 
-        videoSrc="/videos/08-pricing.mp4"
-        posterSrc="/videos/08-pricing.jpg"
-        respectReducedMotion={false}
         id="pricing"
       >
         <div className="max-w-6xl mx-auto">
