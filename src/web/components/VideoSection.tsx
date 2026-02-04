@@ -1,6 +1,6 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
-import { cn } from '@/lib/utils';
+import React, { useRef, useEffect, useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 interface VideoSectionProps {
   videoSrc: string; // e.g., "/videos/01-hero.mp4"
@@ -41,7 +41,7 @@ export const VideoSection: React.FC<VideoSectionProps> = ({
           observer.disconnect();
         }
       },
-      { rootMargin: '200px' }
+      { rootMargin: "200px" },
     );
 
     if (containerRef.current) {
@@ -63,19 +63,32 @@ export const VideoSection: React.FC<VideoSectionProps> = ({
   useEffect(() => {
     if (prefersReducedMotion && videoRef.current) {
       videoRef.current.pause();
-    } else if (!shouldReduceMotion && videoRef.current && isVideoLoaded && !videoError) {
+    } else if (
+      !shouldReduceMotion &&
+      videoRef.current &&
+      isVideoLoaded &&
+      !videoError
+    ) {
       // Ensure video is playing if it should be
-      videoRef.current.play().catch(err => {
+      videoRef.current.play().catch((err) => {
         // Many browsers block autoplay unless muted, but we are muted.
         // Still, some might block it or it might fail if the element is removed.
-        if (err.name !== 'AbortError') {
+        if (err.name !== "AbortError") {
           console.warn(`Video play failed for ${videoSrc}:`, err);
         }
       });
     }
-  }, [prefersReducedMotion, shouldReduceMotion, isVideoLoaded, videoError, videoSrc]);
+  }, [
+    prefersReducedMotion,
+    shouldReduceMotion,
+    isVideoLoaded,
+    videoError,
+    videoSrc,
+  ]);
 
-  const handleVideoError = (e: React.SyntheticEvent<HTMLVideoElement, Event>) => {
+  const handleVideoError = (
+    e: React.SyntheticEvent<HTMLVideoElement, Event>,
+  ) => {
     console.error(`Video error for ${videoSrc}:`, e);
     setVideoError(true);
   };
@@ -91,8 +104,8 @@ export const VideoSection: React.FC<VideoSectionProps> = ({
   const handleCanPlay = () => {
     setIsVideoLoaded(true);
     if (!shouldReduceMotion && videoRef.current && !videoError) {
-      videoRef.current.play().catch(err => {
-        if (err.name !== 'AbortError') {
+      videoRef.current.play().catch((err) => {
+        if (err.name !== "AbortError") {
           console.warn(`Video play failed for ${videoSrc}:`, err);
         }
       });
@@ -104,12 +117,12 @@ export const VideoSection: React.FC<VideoSectionProps> = ({
   };
 
   return (
-    <section 
+    <section
       id={id}
       ref={containerRef}
       className={cn(
         "relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-background",
-        containerClassName
+        containerClassName,
       )}
     >
       {/* Background Video */}
@@ -130,29 +143,33 @@ export const VideoSection: React.FC<VideoSectionProps> = ({
             onError={handleVideoError}
             className={cn(
               "absolute inset-0 w-full h-full object-cover transition-opacity duration-1000",
-              isVideoLoaded ? "opacity-100" : "opacity-0"
+              isVideoLoaded ? "opacity-100" : "opacity-0",
             )}
           >
             <source src={videoSrc} type="video/mp4" />
           </video>
         )}
-        
+
         {/* Fallback Poster for Reduced Motion, While Loading, or Error */}
-        <img 
-          src={posterSrc} 
-          alt="" 
+        <img
+          src={posterSrc}
+          alt=""
           className={cn(
             "absolute inset-0 w-full h-full object-cover transition-opacity duration-1000",
-            (shouldReduceMotion || !isVideoLoaded || videoError) ? "opacity-100" : "opacity-0"
+            shouldReduceMotion || !isVideoLoaded || videoError
+              ? "opacity-100"
+              : "opacity-0",
           )}
           aria-hidden="true"
         />
 
         {/* Overlays */}
-        <div className={cn(
-          "absolute inset-0 bg-gradient-to-b from-background/60 via-background/20 to-background/80 z-10",
-          overlayClassName
-        )} />
+        <div
+          className={cn(
+            "absolute inset-0 bg-gradient-to-b from-background/60 via-background/20 to-background/80 z-10",
+            overlayClassName,
+          )}
+        />
         <div className="absolute inset-0 bg-background/30 z-10" />
       </div>
 

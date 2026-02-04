@@ -12,7 +12,7 @@ export const Navbar = () => {
         <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
           <span className="text-white font-bold">P</span>
         </div>
-        <span className="text-xl font-bold tracking-tight">Panda</span>
+        <span className="text-xl font-bold tracking-tight">Nuvis</span>
       </div>
       
       <div className="hidden md:flex items-center gap-8">

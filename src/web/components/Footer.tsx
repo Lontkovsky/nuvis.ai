@@ -11,7 +11,7 @@ export const Footer = () => {
               <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold">P</span>
               </div>
-              <span className="text-xl font-bold tracking-tight">Panda</span>
+              <span className="text-xl font-bold tracking-tight">Nuvis</span>
             </div>
             <p className="text-muted-foreground text-sm max-w-xs leading-relaxed">
               The invisible AI co-pilot for your digital life. On screen, in the moment, and always private.
@@ -62,7 +62,7 @@ export const Footer = () => {
 
         <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-xs text-muted-foreground">
-            © {new Date().getFullYear()} Panda AI. All rights reserved.
+            © {new Date().getFullYear()} Nuvis AI. All rights reserved.
           </p>
           <p className="text-xs text-muted-foreground flex items-center gap-2">
             Made with <span className="text-primary">♥</span> for the open web.

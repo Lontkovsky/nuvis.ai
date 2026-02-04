@@ -29,7 +29,7 @@ export function Metadata() {
 				{JSON.stringify({
 					"@context": "https://schema.org",
 					"@type": "SoftwareApplication",
-					"name": "Panda",
+					"name": "Nuvis",
 					"operatingSystem": "macOS, Windows",
 					"applicationCategory": "ProductivityApplication",
 					"offers": {

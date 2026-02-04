@@ -49,7 +49,7 @@ export const WowDemo = () => {
             <div className="h-4 bg-white/10 rounded w-2/3" />
           </div>
 
-          {/* Panda Assistant UI (Always visible here) */}
+          {/* Nuvis Assistant UI (Always visible here) */}
           <motion.div 
             initial={false}
             animate={{ opacity: 1, scale: 1 }}
@@ -57,7 +57,7 @@ export const WowDemo = () => {
           >
             <div className="flex items-center gap-2 mb-2">
               <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
-              <span className="text-[10px] font-bold text-primary uppercase tracking-tighter">Panda Live</span>
+              <span className="text-[10px] font-bold text-primary uppercase tracking-tighter">Nuvis Live</span>
             </div>
             <p className="text-[11px] leading-tight text-foreground/90 italic">
               "The client mentioned the budget is flexible for the Q4 rollout..."
@@ -97,7 +97,7 @@ export const WowDemo = () => {
             <div className="h-4 bg-white/10 rounded w-2/3" />
           </div>
 
-          {/* Panda Assistant UI (Invisible here even when sharing) */}
+          {/* Nuvis Assistant UI (Invisible here even when sharing) */}
           <div className="absolute bottom-6 right-6 w-48 h-24 border border-dashed border-white/5 rounded-xl flex items-center justify-center">
             <div className="flex flex-col items-center gap-1 opacity-20">
               <EyeOff className="w-4 h-4" />
@@ -110,7 +110,7 @@ export const WowDemo = () => {
       <div className="p-4 bg-black/40 border-t border-border flex justify-center">
         <p className="text-xs text-muted-foreground flex items-center gap-2">
           <span className="w-1.5 h-1.5 bg-primary rounded-full" />
-          Panda uses system-level overlays that are excluded from display capture APIs.
+          Nuvis uses system-level overlays that are excluded from display capture APIs.
         </p>
       </div>
     </div>
