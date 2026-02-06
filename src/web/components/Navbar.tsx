@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 
 export const Navbar = () => {
@@ -9,9 +8,7 @@ export const Navbar = () => {
       className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 backdrop-blur-md bg-background/10 border-b border-border"
     >
       <div className="flex items-center gap-2">
-        <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-          <span className="text-white font-bold">P</span>
-        </div>
+        <img src="/logo_nuvis.png" alt="Nuvis Logo" className="w-12 h-12" />
         <span className="text-xl font-bold tracking-tight">Nuvis</span>
       </div>
       
