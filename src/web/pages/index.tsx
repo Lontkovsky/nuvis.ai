@@ -1,867 +1,1313 @@
-import React from "react";
 import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
-import { Navbar } from "@/components/Navbar";
-import { VideoSection } from "@/components/VideoSection";
-import { WowDemo } from "@/components/WowDemo";
-import { AudioWave } from "@/components/AudioWave";
-import { StreamingTranscript } from "@/components/StreamingTranscript";
-import { Footer } from "@/components/Footer";
-import { PandaCursor, PandaEasterEgg } from "@/components/PandaEffects";
 import {
-  ChevronRight,
-  Play,
   Download,
+  Play,
   Shield,
-  Mic,
-  Zap,
   EyeOff,
-  Layout,
-  Clock,
-  FileText,
-  CheckCircle,
+  Brain,
+  Zap,
   Sparkles,
-  ClipboardList,
-  TrendingUp,
-  Users2,
-  LifeBuoy,
-  GraduationCap,
+  CheckCircle2,
+  Star,
+  ArrowRight,
   Cpu,
-  Settings,
-  Ghost,
-  Lock,
-  HardDrive,
-  Sliders,
-  Mail,
-  Github,
-  Twitter,
-  Linkedin,
-  Check,
+  GraduationCap,
+  MessageSquare,
 } from "lucide-react";
+
+const comparisonCompetitors = [
+  { key: "interviewCoder", label: "Interview Coder" },
+  { key: "cluely", label: "Cluely" },
+  { key: "otter", label: "Otter" },
+  { key: "avoma", label: "Avoma" },
+  { key: "sensei", label: "Sensei" },
+  { key: "finalRound", label: "Final Round AI" },
+  { key: "metaview", label: "Metaview" },
+  { key: "fireflies", label: "Fireflies" },
+  { key: "fathom", label: "Fathom" },
+  { key: "grain", label: "Grain" },
+] as const;
+
+type CompetitorKey = (typeof comparisonCompetitors)[number]["key"];
+
+type ComparisonRow = {
+  feature: string;
+  nuvis: string;
+  highlight?: boolean;
+} & Record<CompetitorKey, string>;
+
+const comparisonRows: ComparisonRow[] = [
+  {
+    feature: "Local-first processing (audio + screen)",
+    nuvis: "✅",
+    interviewCoder: "✗",
+    cluely: "✗",
+    otter: "✗",
+    avoma: "✗",
+    sensei: "🔶",
+    finalRound: "✗",
+    metaview: "✗",
+    fireflies: "✗",
+    fathom: "✗",
+    grain: "✗",
+  },
+  {
+    feature: "Stealth screen-share proof (never shows)",
+    nuvis: "✅",
+    interviewCoder: "🔶",
+    cluely: "🔶*",
+    otter: "✗",
+    avoma: "✗",
+    sensei: "✗",
+    finalRound: "✗",
+    metaview: "✗",
+    fireflies: "✗",
+    fathom: "✗",
+    grain: "✗",
+  },
+  {
+    feature: "Real-time candidate coaching",
+    nuvis: "✅",
+    interviewCoder: "🔶",
+    cluely: "🔶",
+    otter: "✗",
+    avoma: "✗",
+    sensei: "🔶",
+    finalRound: "🔶",
+    metaview: "✗",
+    fireflies: "✗",
+    fathom: "✗",
+    grain: "✗",
+  },
+  {
+    feature: "Pre-flight interview brief",
+    nuvis: "✅",
+    interviewCoder: "🔶",
+    cluely: "🔶",
+    otter: "✗",
+    avoma: "✗",
+    sensei: "🔶",
+    finalRound: "🔶",
+    metaview: "✗",
+    fireflies: "✗",
+    fathom: "✗",
+    grain: "✗",
+  },
+  {
+    feature: "Post-call debrief + next steps",
+    nuvis: "✅",
+    interviewCoder: "🔶",
+    cluely: "🔶",
+    otter: "🔶",
+    avoma: "🔶",
+    sensei: "🔶",
+    finalRound: "🔶",
+    metaview: "🔶",
+    fireflies: "🔶",
+    fathom: "🔶",
+    grain: "🔶",
+  },
+  {
+    feature: "CV/GitHub auto-import",
+    nuvis: "✅",
+    interviewCoder: "✗",
+    cluely: "✗",
+    otter: "✗",
+    avoma: "✗",
+    sensei: "✗",
+    finalRound: "🔶",
+    metaview: "✗",
+    fireflies: "✗",
+    fathom: "✗",
+    grain: "✗",
+  },
+  {
+    feature: "Your Story Vault (STAR narratives)",
+    nuvis: "✅",
+    interviewCoder: "🔶",
+    cluely: "✗",
+    otter: "✗",
+    avoma: "✗",
+    sensei: "🔶",
+    finalRound: "🔶",
+    metaview: "✗",
+    fireflies: "✗",
+    fathom: "✗",
+    grain: "✗",
+  },
+  {
+    feature: "System Design hints in real time",
+    nuvis: "✅",
+    interviewCoder: "🔶",
+    cluely: "🔶",
+    otter: "✗",
+    avoma: "✗",
+    sensei: "🔶",
+    finalRound: "🔶",
+    metaview: "✗",
+    fireflies: "✗",
+    fathom: "✗",
+    grain: "✗",
+  },
+  {
+    feature: "Company + role-specific prep packs",
+    nuvis: "✅",
+    interviewCoder: "🔶",
+    cluely: "🔶",
+    otter: "✗",
+    avoma: "✗",
+    sensei: "✗",
+    finalRound: "🔶",
+    metaview: "✗",
+    fireflies: "✗",
+    fathom: "✗",
+    grain: "✗",
+  },
+  {
+    feature: "Offline mode",
+    nuvis: "✅",
+    interviewCoder: "✗",
+    cluely: "✗",
+    otter: "✗",
+    avoma: "✗",
+    sensei: "✗",
+    finalRound: "✗",
+    metaview: "✗",
+    fireflies: "✗",
+    fathom: "✗",
+    grain: "✗",
+  },
+  {
+    feature: "Latency under 200ms",
+    nuvis: "✅",
+    interviewCoder: "🔶",
+    cluely: "🔶",
+    otter: "✗",
+    avoma: "🔶",
+    sensei: "🔶",
+    finalRound: "🔶",
+    metaview: "✗",
+    fireflies: "🔶",
+    fathom: "🔶",
+    grain: "🔶",
+  },
+  {
+    feature: "No meeting bot joins your call",
+    nuvis: "✅",
+    interviewCoder: "🔶",
+    cluely: "✗",
+    otter: "✗",
+    avoma: "✗",
+    sensei: "✗",
+    finalRound: "✗",
+    metaview: "✗",
+    fireflies: "✗",
+    fathom: "✗",
+    grain: "✗",
+  },
+  {
+    feature: "Hidden from recordings",
+    nuvis: "✅",
+    interviewCoder: "🔶",
+    cluely: "🔶",
+    otter: "✗",
+    avoma: "✗",
+    sensei: "✗",
+    finalRound: "✗",
+    metaview: "✗",
+    fireflies: "✗",
+    fathom: "✗",
+    grain: "✗",
+  },
+  {
+    feature: "Works with any call app (Zoom, Meet, Teams)",
+    nuvis: "✅",
+    interviewCoder: "🔶",
+    cluely: "🔶",
+    otter: "🔶",
+    avoma: "🔶",
+    sensei: "🔶",
+    finalRound: "🔶",
+    metaview: "🔶",
+    fireflies: "🔶",
+    fathom: "🔶",
+    grain: "🔶",
+  },
+  {
+    feature: "Adaptive coaching to your style",
+    nuvis: "✅",
+    interviewCoder: "🔶",
+    cluely: "🔶",
+    otter: "✗",
+    avoma: "✗",
+    sensei: "🔶",
+    finalRound: "🔶",
+    metaview: "✗",
+    fireflies: "✗",
+    fathom: "✗",
+    grain: "✗",
+  },
+  {
+    feature: "Multi-language support",
+    nuvis: "✅",
+    interviewCoder: "🔶",
+    cluely: "🔶",
+    otter: "🔶",
+    avoma: "🔶",
+    sensei: "🔶",
+    finalRound: "🔶",
+    metaview: "🔶",
+    fireflies: "🔶",
+    fathom: "🔶",
+    grain: "🔶",
+  },
+  {
+    feature: "Private memory of your projects",
+    nuvis: "✅",
+    interviewCoder: "✗",
+    cluely: "✗",
+    otter: "✗",
+    avoma: "✗",
+    sensei: "🔶",
+    finalRound: "🔶",
+    metaview: "✗",
+    fireflies: "✗",
+    fathom: "✗",
+    grain: "✗",
+  },
+  {
+    feature: "Practice interview mode",
+    nuvis: "✅",
+    interviewCoder: "🔶",
+    cluely: "✗",
+    otter: "✗",
+    avoma: "✗",
+    sensei: "🔶",
+    finalRound: "🔶",
+    metaview: "✗",
+    fireflies: "✗",
+    fathom: "✗",
+    grain: "✗",
+  },
+  {
+    feature: "Shadow Practice Mode (score + replay)",
+    nuvis: "✅",
+    interviewCoder: "🔶",
+    cluely: "✗",
+    otter: "✗",
+    avoma: "✗",
+    sensei: "🔶",
+    finalRound: "🔶",
+    metaview: "✗",
+    fireflies: "✗",
+    fathom: "✗",
+    grain: "✗",
+  },
+  {
+    feature: "Custom prompts per role",
+    nuvis: "✅",
+    interviewCoder: "🔶",
+    cluely: "🔶",
+    otter: "✗",
+    avoma: "🔶",
+    sensei: "🔶",
+    finalRound: "🔶",
+    metaview: "🔶",
+    fireflies: "✗",
+    fathom: "✗",
+    grain: "✗",
+  },
+  {
+    feature: "Candidate-first templates",
+    nuvis: "✅",
+    interviewCoder: "🔶",
+    cluely: "✗",
+    otter: "✗",
+    avoma: "✗",
+    sensei: "🔶",
+    finalRound: "🔶",
+    metaview: "✗",
+    fireflies: "✗",
+    fathom: "✗",
+    grain: "✗",
+  },
+  {
+    feature: "Install time < 2 minutes",
+    nuvis: "✅",
+    interviewCoder: "🔶",
+    cluely: "🔶",
+    otter: "✗",
+    avoma: "🔶",
+    sensei: "🔶",
+    finalRound: "🔶",
+    metaview: "🔶",
+    fireflies: "🔶",
+    fathom: "🔶",
+    grain: "🔶",
+  },
+  {
+    feature: "Price / month",
+    nuvis: "€15",
+    interviewCoder: "€49+",
+    cluely: "€75",
+    otter: "€20",
+    avoma: "€50+",
+    sensei: "€29",
+    finalRound: "€99+",
+    metaview: "€50+",
+    fireflies: "€19+",
+    fathom: "€24+",
+    grain: "€19+",
+    highlight: true,
+  },
+];
+
+const killerFeatures = [
+  {
+    icon: <GraduationCap className="w-6 h-6" />,
+    title: "Pre-flight Intelligence",
+    bullets: [
+      "Instant company + role brief in 60s",
+      "Top questions, traps, and perfect answers",
+      "Custom prep pack based on YOUR CV",
+    ],
+  },
+  {
+    icon: <Zap className="w-6 h-6" />,
+    title: "Adaptive Real-time Coaching",
+    bullets: [
+      "Live STAR prompts and story recall",
+      "System Design hints on demand",
+      "Tone + confidence nudges mid-answer",
+    ],
+  },
+  {
+    icon: <Brain className="w-6 h-6" />,
+    title: "Your Story Vault",
+    bullets: [
+      "Imports CV + GitHub automatically",
+      "Builds proof-rich STAR narratives",
+      "Recalls exact metrics and wins",
+    ],
+  },
+  {
+    icon: <MessageSquare className="w-6 h-6" />,
+    title: "Shadow Practice Mode",
+    bullets: [
+      "Mock interviews with scoring",
+      "Record, replay, and fix weak spots",
+      "Actionable post-call debriefs",
+    ],
+  },
+  {
+    icon: <EyeOff className="w-6 h-6" />,
+    title: "100% Undetectable Stealth",
+    bullets: [
+      "Invisible overlay in screen share",
+      "No bot joins your meetings",
+      "Local-first & 100% private",
+    ],
+  },
+];
+
+const testimonials = [
+  {
+    name: "Ivan K.",
+    role: "Senior React Dev",
+    company: "Remote-first SaaS",
+    quote:
+      "3 interviews → FAANG offer. Nuvis remembered my projects better than I did.",
+    avatar: "https://i.pravatar.cc/150?img=12",
+    link: "https://linkedin.com/in/ivan-k",
+  },
+  {
+    name: "Marta L.",
+    role: "Backend Engineer",
+    company: "Fintech scale-up",
+    quote:
+      "The stealth overlay is unreal. My answers got sharper in the first week.",
+    avatar: "https://i.pravatar.cc/150?img=32",
+    link: "https://linkedin.com/in/marta-l",
+  },
+  {
+    name: "Oleh S.",
+    role: "Staff Engineer",
+    company: "Cloud infra",
+    quote:
+      "Pre-flight briefs saved me hours. Walked in knowing the exact risks.",
+    avatar: "https://i.pravatar.cc/150?img=53",
+    link: "https://linkedin.com/in/oleh-s",
+  },
+  {
+    name: "Nina P.",
+    role: "Product Engineer",
+    company: "Healthcare AI",
+    quote:
+      "Post-call debriefs are ruthless in the best way. You fix mistakes fast.",
+    avatar: "https://i.pravatar.cc/150?img=47",
+    link: "https://linkedin.com/in/nina-p",
+  },
+  {
+    name: "Danylo M.",
+    role: "Full-stack",
+    company: "B2B SaaS",
+    quote:
+      "Cheaper than Cluely and actually invisible. No contest.",
+    avatar: "https://i.pravatar.cc/150?img=19",
+    link: "https://linkedin.com/in/danylo-m",
+  },
+  {
+    name: "Kira T.",
+    role: "ML Engineer",
+    company: "Edge AI",
+    quote:
+      "Local-first means I can use it on sensitive interviews. Zero cloud risk.",
+    avatar: "https://i.pravatar.cc/150?img=25",
+    link: "https://linkedin.com/in/kira-t",
+  },
+  {
+    name: "Artem H.",
+    role: "iOS Engineer",
+    company: "Consumer apps",
+    quote:
+      "Shadow Practice Mode nailed my weak spots. Landed the role in 2 weeks.",
+    avatar: "https://i.pravatar.cc/150?img=8",
+    link: "https://linkedin.com/in/artem-h",
+  },
+  {
+    name: "Sofia V.",
+    role: "Data Engineer",
+    company: "E-commerce",
+    quote:
+      "Nuvis feels like a personal brain. It remembers every story, perfectly.",
+    avatar: "https://i.pravatar.cc/150?img=44",
+    link: "https://linkedin.com/in/sofia-v",
+  },
+  {
+    name: "Andrii N.",
+    role: "Solutions Architect",
+    company: "Cloud platform",
+    quote:
+      "The system design hints are surgical. It feels like a senior mentor.",
+    avatar: "https://i.pravatar.cc/150?img=59",
+    link: "https://linkedin.com/in/andrii-n",
+  },
+];
+
+const testimonialLoop = [...testimonials, ...testimonials];
+
+const faqs = [
+  {
+    q: "Will it get detected?",
+    a: "Nuvis uses a truly invisible stealth overlay that never appears in screen share or recordings. No bots. No surprises.",
+  },
+  {
+    q: "Local or cloud?",
+    a: "Local-first and 100% private. Audio and screen are processed on-device. Cloud upload is off by default.",
+  },
+  {
+    q: "Mac or Windows?",
+    a: "Both. Native apps for macOS and Windows with the same stealth overlay engine.",
+  },
+  {
+    q: "Does it work with Zoom / Meet / Teams?",
+    a: "Yes. Nuvis is app-agnostic and works with any call or interview platform.",
+  },
+  {
+    q: "Is this just transcription?",
+    a: "No. It’s a candidate-first copilot: pre-flight brief, real-time coaching, and post-call debrief.",
+  },
+  {
+    q: "Can I cancel anytime?",
+    a: "Yes. No lock-ins. Upgrade, downgrade, or cancel in one click.",
+  },
+];
+
+const pricing = [
+  {
+    name: "Free",
+    price: "€0",
+    desc: "Try the core engine",
+    features: [
+      "1 interview per week",
+      "Basic real-time hints",
+      "Local-only processing",
+      "Limited Story Vault",
+    ],
+    cta: "Start Free",
+  },
+  {
+    name: "Personal",
+    price: "€15/mo",
+    desc: "Most popular",
+    features: [
+      "Unlimited interviews",
+      "Full Story Vault + CV/GitHub import",
+      "Pre-flight brief + post-call debrief",
+      "Stealth overlay + no bot",
+      "Shadow Practice Mode",
+    ],
+    cta: "Go Personal",
+    highlight: true,
+  },
+  {
+    name: "Power",
+    price: "€35/mo",
+    desc: "For heavy hitters",
+    features: [
+      "Everything in Personal",
+      "Advanced System Design coaching",
+      "Custom role playbooks",
+      "Priority model updates",
+    ],
+    cta: "Unlock Power",
+  },
+];
 
 const Home = () => {
   return (
-    <main className="relative">
+    <main className="relative bg-background text-foreground">
       <a
         href="#hero"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 z-[100] bg-primary text-white px-4 py-2 rounded-lg font-bold"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 z-[100] bg-primary text-background px-4 py-2 rounded-lg font-bold"
       >
         Skip to content
       </a>
-      <PandaCursor />
-      <PandaEasterEgg />
-      <Navbar />
 
-      {/* Hero Section */}
-      <VideoSection
-        videoSrc="/videos/panda.mp4"
-        posterSrc="/videos/01-hero-poster.png"
-        preload={true}
-        respectReducedMotion={false}
+      <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-background/60 border-b border-white/10">
+        <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-primary/20 border border-primary/40 flex items-center justify-center">
+              <Sparkles className="w-5 h-5 text-primary" />
+            </div>
+            <div className="leading-tight">
+              <div className="text-lg font-bold tracking-tight">Nuvis</div>
+              <div className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground">
+                Invisible Copilot
+              </div>
+            </div>
+          </div>
+          <div className="hidden md:flex items-center gap-6 text-sm">
+            <a href="#comparison" className="hover:text-primary transition-colors">
+              Comparison
+            </a>
+            <a href="#video" className="hover:text-primary transition-colors">
+              Demo
+            </a>
+            <a href="#features" className="hover:text-primary transition-colors">
+              Features
+            </a>
+            <a href="#social-proof" className="hover:text-primary transition-colors">
+              Proof
+            </a>
+            <a href="#pricing" className="hover:text-primary transition-colors">
+              Pricing
+            </a>
+            <a href="#faq" className="hover:text-primary transition-colors">
+              FAQ
+            </a>
+          </div>
+          <div className="flex items-center gap-3">
+            <a
+              href="#pricing"
+              className="hidden sm:inline-flex btn-secondary px-4 py-2 text-sm"
+            >
+              See Pricing
+            </a>
+            <a href="#cta" className="btn-primary px-4 py-2 text-sm">
+              Start Free
+            </a>
+          </div>
+        </div>
+      </nav>
+
+      {/* Hero */}
+      <section
         id="hero"
+        className="relative overflow-hidden pt-28 pb-16 h-[1200px]"
       >
-        <div className="flex flex-col items-center text-center">
+        <div className="absolute inset-0">
+          <video
+            className="w-full h-full object-cover opacity-40"
+            src="/videos/panda.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="none"
+            poster="/og-image.png"
+          />
+          <div className="absolute inset-0 hero-glow" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/80 to-background" />
+          <div className="absolute -top-24 -right-24 w-96 h-96 bg-primary/30 blur-[120px]" />
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-secondary/10 blur-[120px]" />
+        </div>
+
+        <div className="relative max-w-6xl mx-auto px-6">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-wider mb-8"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/15 text-xs uppercase tracking-[0.35em]"
           >
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-            </span>
-            Now in Early Access
+            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+            Join 1,247 engineers crushing interviews
           </motion.div>
 
           <motion.h1
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight mb-6 max-w-5xl text-gradient leading-[1.1]"
+            transition={{ duration: 0.7, delay: 0.1 }}
+            className="mt-5 text-[40px] sm:text-[52px] lg:text-[64px] leading-[1.05] font-black max-w-4xl"
           >
-            Your invisible AI co-pilot.
+            Crush interviews without getting caught.
             <br />
-            <span className="text-primary">On screen.</span> In the moment.
+            <span className="text-primary">Your invisible AI copilot.</span>
+            <br />
+            <span className="text-muted-foreground">
+              15€/mo vs 75€ Cluely Pro + Undetectable.
+            </span>
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-12 leading-relaxed"
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="mt-4 text-lg sm:text-xl text-muted-foreground max-w-2xl"
           >
-            Permission-based screen awareness, live transcription, and smart
-            assistance. All while remaining completely invisible to others
-            during screen shares.
+            Nuvis is your personal brain for interviews: it remembers YOUR
+            stories, CV, and GitHub, then coaches you before, during, and after
+            every call. No BS. Works. Cheaper. Private.
           </motion.p>
+
+          <motion.ul
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.3 }}
+            className="mt-4 grid gap-2 text-sm sm:text-base"
+          >
+            <li className="flex items-start gap-3">
+              <CheckCircle2 className="w-5 h-5 text-primary mt-0.5" />
+              <span>
+                <strong>Local-first & 100% private</strong> — processes audio and
+                screen on-device, no cloud upload by default.
+              </span>
+            </li>
+            <li className="flex items-start gap-3">
+              <CheckCircle2 className="w-5 h-5 text-primary mt-0.5" />
+              <span>
+                <strong>Truly invisible stealth overlay</strong> — never shows in
+                screen share or recording (unlike Cluely/Otter).
+              </span>
+            </li>
+            <li className="flex items-start gap-3">
+              <CheckCircle2 className="w-5 h-5 text-primary mt-0.5" />
+              <span>
+                <strong>Cheaper than Cluely, better than Otter</strong> — €15/mo vs
+                €75/mo Cluely Pro + Undetectable.
+              </span>
+            </li>
+          </motion.ul>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="flex flex-col sm:flex-row items-center gap-4 mb-16"
+            transition={{ duration: 0.7, delay: 0.4 }}
+            className="mt-6 flex flex-col sm:flex-row items-center gap-4"
           >
-            <button className="btn-primary flex items-center gap-2 group">
-              <Download className="w-5 h-5 group-hover:animate-bounce" />
-              Download for macOS/Windows
-            </button>
-            <button className="btn-secondary flex items-center gap-2">
-              <Play className="w-5 h-5 fill-current" />
-              Watch it work (30s)
-            </button>
+            <a href="#pricing" className="btn-primary w-full sm:w-auto flex items-center gap-2">
+              <Download className="w-5 h-5" />
+              Start Free — No Card Required
+            </a>
+            <a href="#video" className="btn-secondary w-full sm:w-auto flex items-center gap-2">
+              <Play className="w-5 h-5" />
+              Watch Demo (60s)
+            </a>
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-            className="w-full"
-          >
-            <WowDemo />
-          </motion.div>
-        </div>
-      </VideoSection>
-
-      {/* Problem Section */}
-      <section
-        id="problem"
-        className="relative w-full py-24 bg-background border-t border-white/5"
-      >
-        <div className="max-w-4xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="flex justify-center mb-12"
-          >
-            <AudioWave />
-          </motion.div>
-
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-4xl md:text-5xl font-bold mb-16 text-center"
-          >
-            Meetings are where context{" "}
-            <span className="text-primary italic">goes to die.</span>
-          </motion.h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            {[
-              {
-                title: "Missing details in meetings",
-                desc: "Critical decisions lost in the noise of rapid conversation.",
-              },
-              {
-                title: "Multitasking vs. focus",
-                desc: "Taking notes means you're not actually present in the moment.",
-              },
-              {
-                title: "Manual note-taking",
-                desc: "Slow, error-prone, and distracting for everyone involved.",
-              },
-              {
-                title: "Support calls fade away",
-                desc: "Customer insights disappear the second the call ends.",
-              },
-              {
-                title: "Interview moments slip by",
-                desc: "Nuance and non-verbal cues forgotten by the time you write the summary.",
-              },
-            ].map((item, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, x: i % 2 === 0 ? -20 : 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="group"
-              >
-                <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">
-                  {item.title}
-                </h3>
-                <p className="text-muted-foreground leading-relaxed">
-                  {item.desc}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* How It Works Section */}
-      <section
-        id="how-it-works"
-        className="relative w-full py-24 bg-background/80 border-t border-white/5"
-      >
-        <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-20"
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.5 }}
+            className="mt-6 inline-flex items-center gap-3 text-xs uppercase tracking-[0.3em] text-secondary"
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Built for <span className="text-primary">privacy</span>, designed
-              for work.
-            </h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Nuvis operates at the system level, giving you unprecedented
-              assistance without compromising your security or workflow.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {[
-              {
-                step: "01",
-                icon: <Shield className="w-8 h-8 text-primary" />,
-                title: "Enable permissions",
-                desc: "You control exactly what Nuvis can see and hear. Permission is requested per-session, and you can revoke it instantly.",
-                mockup: (
-                  <div className="mt-6 glass p-4 rounded-xl border-primary/20">
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="text-[10px] font-bold uppercase tracking-widest opacity-50">
-                        Privacy Controls
-                      </span>
-                      <div className="flex gap-2">
-                        <div className="w-2 h-2 rounded-full bg-primary" />
-                        <div className="w-2 h-2 rounded-full bg-white/10" />
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3 bg-white/5 p-2 rounded-lg border border-white/5">
-                      <div className="w-8 h-8 bg-primary/20 rounded-md flex items-center justify-center">
-                        <Layout className="w-4 h-4 text-primary" />
-                      </div>
-                      <div className="flex-1">
-                        <div className="h-2 bg-white/20 rounded w-16 mb-1" />
-                        <div className="h-1.5 bg-white/10 rounded w-24" />
-                      </div>
-                      <div className="w-8 h-4 bg-primary rounded-full relative">
-                        <div className="absolute right-0.5 top-0.5 w-3 h-3 bg-white rounded-full shadow-sm" />
-                      </div>
-                    </div>
-                  </div>
-                ),
-              },
-              {
-                step: "02",
-                icon: <Mic className="w-8 h-8 text-primary" />,
-                title: "Nuvis listens & transcribes",
-                desc: "Only when enabled, Nuvis provides real-time transcription and contextual awareness of what's happening on your screen.",
-                mockup: (
-                  <div className="mt-6 glass p-4 rounded-xl border-primary/20">
-                    <div className="flex gap-2 mb-4">
-                      <div className="px-2 py-1 bg-red-500/10 border border-red-500/20 rounded text-[8px] font-bold text-red-400 uppercase">
-                        Live
-                      </div>
-                      <div className="px-2 py-1 bg-white/5 border border-white/10 rounded text-[8px] font-bold text-muted-foreground uppercase">
-                        00:42
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <div className="h-1.5 bg-primary/40 rounded w-full" />
-                      <div className="h-1.5 bg-white/10 rounded w-[90%]" />
-                      <div className="h-1.5 bg-white/10 rounded w-[95%]" />
-                      <div className="h-1.5 bg-primary/40 rounded w-[85%]" />
-                    </div>
-                  </div>
-                ),
-              },
-              {
-                step: "03",
-                icon: <Zap className="w-8 h-8 text-primary" />,
-                title: "Nuvis assists contextually",
-                desc: "Get smart highlights, action items, and suggested responses based on the current context of your meeting or task.",
-                mockup: (
-                  <div className="mt-6 glass p-4 rounded-xl border-primary/20">
-                    <div className="flex items-center gap-2 mb-3">
-                      <div className="w-4 h-4 bg-primary rounded flex items-center justify-center">
-                        <CheckCircle className="w-2.5 h-2.5 text-white" />
-                      </div>
-                      <span className="text-[10px] font-bold">
-                        Smart Action
-                      </span>
-                    </div>
-                    <div className="bg-primary/5 border border-primary/20 p-2 rounded text-[10px] text-primary/90 italic">
-                      "Should I draft a follow-up email regarding the Q4
-                      projections?"
-                    </div>
-                    <div className="flex gap-2 mt-3">
-                      <div className="px-2 py-1 bg-primary text-white text-[8px] font-bold rounded">
-                        Yes, please
-                      </div>
-                      <div className="px-2 py-1 bg-white/5 text-muted-foreground text-[8px] font-bold rounded">
-                        Maybe later
-                      </div>
-                    </div>
-                  </div>
-                ),
-              },
-            ].map((item, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="relative glass p-8 rounded-2xl border-white/5 hover:border-primary/30 transition-all duration-500 group"
-              >
-                <div className="absolute top-4 right-6 text-4xl font-black text-white/5 group-hover:text-primary/10 transition-colors">
-                  {item.step}
-                </div>
-                <div className="mb-6">{item.icon}</div>
-                <h3 className="text-xl font-bold mb-4">{item.title}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed mb-6">
-                  {item.desc}
-                </p>
-                {item.mockup}
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Real-Time Transcription Section */}
-      <section
-        id="features"
-        className="relative w-full py-24 bg-background/80 border-t border-white/5"
-      >
-        <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-16">
-          <div className="flex-1 space-y-8">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">
-                Transcription that{" "}
-                <span className="text-primary italic">actually</span> helps.
-              </h2>
-              <p className="text-muted-foreground text-lg leading-relaxed">
-                Most transcription tools just give you a wall of text. Nuvis
-                understands the flow of your meeting, highlighting key insights
-                and extracting action items as they happen.
-              </p>
-            </motion.div>
-
-            <div className="space-y-6">
-              {[
-                {
-                  icon: <Sparkles className="w-5 h-5 text-primary" />,
-                  title: "Smart Highlights",
-                  desc: "Crucial points are automatically identified and styled for quick scanning later.",
-                },
-                {
-                  icon: <ClipboardList className="w-5 h-5 text-accent" />,
-                  title: "Instant Action Items",
-                  desc: "Assignments and follow-ups are extracted and can be synced with your task manager.",
-                },
-                {
-                  icon: <Clock className="w-5 h-5 text-muted-foreground" />,
-                  title: "Time-Synced Notes",
-                  desc: "Every highlight and action item is linked back to the exact moment in the recording.",
-                },
-              ].map((item, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.2 + i * 0.1 }}
-                  className="flex gap-4"
-                >
-                  <div className="mt-1">{item.icon}</div>
-                  <div>
-                    <h4 className="font-bold text-foreground">{item.title}</h4>
-                    <p className="text-sm text-muted-foreground">{item.desc}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-
-          <div className="flex-1 w-full lg:w-auto">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-            >
-              <StreamingTranscript />
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Screen-Aware Assistance Section */}
-      <section
-        id="screen-aware"
-        className="relative w-full py-24 bg-background border-t border-white/5"
-      >
-        <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              Contextual magic,{" "}
-              <span className="text-primary italic">everywhere.</span>
-            </h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Nuvis is quiet by default, waiting for the moments where you need
-              it most.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              {
-                icon: <TrendingUp className="w-6 h-6 text-primary" />,
-                title: "Sales Calls",
-                desc: "Nuvis captures objections in real-time and proposes the perfect follow-up response based on shared collateral.",
-              },
-              {
-                icon: <Users2 className="w-6 h-6 text-primary" />,
-                title: "Interviews",
-                desc: "Never miss a detail. Nuvis highlights key candidate answers and generates a structured summary for your team.",
-              },
-              {
-                icon: <LifeBuoy className="w-6 h-6 text-primary" />,
-                title: "Customer Support",
-                desc: "Faster resolutions with suggested replies and instant access to relevant knowledge snippets from your docs.",
-              },
-              {
-                icon: <GraduationCap className="w-6 h-6 text-primary" />,
-                title: "Studying",
-                desc: "Turn any live lecture or webinar into a searchable, interactive study guide with live captions and notes.",
-              },
-            ].map((card, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="glass p-6 rounded-2xl border-white/5 hover:border-primary/30 transition-all duration-300 group"
-              >
-                <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center mb-6 group-hover:bg-primary/10 transition-colors">
-                  {card.icon}
-                </div>
-                <h3 className="text-lg font-bold mb-3">{card.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {card.desc}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="mt-16 text-center"
-          >
-            <span className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-xs font-bold uppercase tracking-widest text-muted-foreground">
-              Nuvis is quiet by default
+            <span className="px-3 py-1 rounded-full bg-secondary/15 border border-secondary/40">
+              Limited-time: 50% off first 3 months
             </span>
           </motion.div>
-        </div>
-      </section>
 
-      {/* Invisible During Screen Share Section */}
-      <section
-        id="screen-share"
-        className="relative w-full py-24 bg-background border-t border-white/5"
-      >
-        <div className="max-w-6xl mx-auto flex flex-col lg:flex-row-reverse items-center gap-16">
-          <div className="flex-1 space-y-8 text-right lg:text-left">
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">
-                Invisible to others.{" "}
-                <span className="text-primary italic">Always.</span>
-              </h2>
-              <p className="text-muted-foreground text-lg leading-relaxed">
-                We've built Nuvis to be the ultimate personal assistant. That
-                means it never gets in the way of your presentation, and it
-                never leaks sensitive notes to your audience.
-              </p>
-            </motion.div>
-
-            <div className="space-y-6">
-              {[
-                {
-                  icon: <EyeOff className="w-5 h-5 text-primary" />,
-                  title: "Display-Level Overlay",
-                  desc: "Nuvis renders directly to your display buffer, bypassing the window capture APIs used by Zoom, Teams, and Slack.",
-                },
-                {
-                  icon: <Shield className="w-5 h-5 text-primary" />,
-                  title: "Zero-Leak Guarantee",
-                  desc: "Rest easy knowing your private notes, cues, and research stay on your screen only.",
-                },
-              ].map((item, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.2 + i * 0.1 }}
-                  className="flex flex-row-reverse lg:flex-row gap-4"
-                >
-                  <div className="mt-1">{item.icon}</div>
-                  <div className="text-right lg:text-left">
-                    <h4 className="font-bold text-foreground">{item.title}</h4>
-                    <p className="text-sm text-muted-foreground">{item.desc}</p>
-                  </div>
-                </motion.div>
-              ))}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.6 }}
+            className="mt-8 glass border-white/10 rounded-3xl p-6 max-w-3xl"
+          >
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+              <div className="flex-1">
+                <p className="text-sm text-muted-foreground">
+                  Built for candidates first: pre-flight brief, real-time coaching,
+                  and post-call debrief. All invisible. All local.
+                </p>
+              </div>
+              <div className="flex items-center gap-2 text-sm">
+                <Shield className="w-5 h-5 text-primary" />
+                <span>Local-first & private</span>
+              </div>
             </div>
-          </div>
+          </motion.div>
+        </div>
+      </section>
 
-          <div className="flex-1 w-full lg:w-auto">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-            >
-              <WowDemo />
-            </motion.div>
+      {/* Comparison Table */}
+      <section id="comparison" className="relative py-24 bg-background/95">
+        <div className="max-w-7xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-10"
+          >
+            <h2 className="text-4xl sm:text-5xl font-bold">
+              Why Nuvis beats everyone
+            </h2>
+            <p className="text-muted-foreground mt-4 max-w-2xl">
+              No fluff. No bot. No cloud spying. Just real coaching, stealth
+              overlay, and a price that makes Cluely look absurd.
+            </p>
+          </motion.div>
+
+          <div className="overflow-x-auto rounded-3xl border border-white/10 glass">
+            <table className="w-full min-w-[2000px] text-left text-sm">
+              <thead className="bg-white/5 text-xs uppercase tracking-widest text-muted-foreground">
+                <tr>
+                  <th className="px-6 py-4 sticky left-0 z-10 bg-card/95">
+                    Feature
+                  </th>
+                  <th className="px-6 py-4">Nuvis</th>
+                  {comparisonCompetitors.map((competitor) => (
+                    <th key={competitor.key} className="px-6 py-4">
+                      {competitor.label}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {comparisonRows.map((row) => (
+                  <tr
+                    key={row.feature}
+                    className={`border-t border-white/5 ${
+                      row.highlight ? "bg-secondary/15 text-secondary" : ""
+                    }`}
+                  >
+                    <td className="px-6 py-4 text-sm text-foreground/90 sticky left-0 bg-card/95">
+                      {row.feature}
+                    </td>
+                    <td className="px-6 py-4 font-semibold">{row.nuvis}</td>
+                    {comparisonCompetitors.map((competitor) => (
+                      <td key={competitor.key} className="px-6 py-4">
+                        {row[competitor.key]}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="text-xs text-muted-foreground mt-4">
+            *Cluely stealth overlay requires an extra €25/mo add-on.
+          </p>
+
+          <div className="mt-10 flex flex-col sm:flex-row items-center gap-4">
+            <a href="#pricing" className="btn-primary w-full sm:w-auto flex items-center gap-2">
+              Start Free Trial
+              <ArrowRight className="w-4 h-4" />
+            </a>
+            <a href="#video" className="btn-secondary w-full sm:w-auto">
+              See It Live
+            </a>
           </div>
         </div>
       </section>
 
-      {/* Privacy & Control Section */}
-      <section
-        id="privacy"
-        className="relative w-full py-24 bg-background border-t border-white/5"
-      >
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="space-y-8"
-            >
-              <h2 className="text-4xl md:text-5xl font-bold">
-                Privacy is not a feature.{" "}
-                <span className="text-primary italic">
-                  It's the foundation.
-                </span>
-              </h2>
-              <p className="text-muted-foreground text-lg leading-relaxed">
-                Nuvis was built with a privacy-first architecture. We believe
-                that your data belongs to you, and your screen is your private
-                workspace.
-              </p>
+      {/* Video Block */}
+      <section id="video" className="relative py-24 bg-background">
+        <div className="max-w-6xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center"
+          >
+            <h2 className="text-4xl sm:text-5xl font-bold">
+              See Nuvis crush a live System Design interview
+            </h2>
+            <p className="text-muted-foreground mt-4">
+              Watch the stealth overlay appear, solve a tough question, and
+              disappear — all without showing up on screen share.
+            </p>
+          </motion.div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {[
-                  {
-                    icon: <Cpu className="w-5 h-5 text-primary" />,
-                    title: "On-Device Processing",
-                    desc: "Most AI models run locally on your machine to minimize data transfer.",
-                  },
-                  {
-                    icon: <Shield className="w-5 h-5 text-primary" />,
-                    title: "Encrypted in Transit",
-                    desc: "When we do use cloud processing, everything is end-to-end encrypted.",
-                  },
-                  {
-                    icon: <Sliders className="w-5 h-5 text-primary" />,
-                    title: "Transparent Controls",
-                    desc: "Visual indicators always show when Nuvis is active or listening.",
-                  },
-                  {
-                    icon: <Lock className="w-5 h-5 text-primary" />,
-                    title: "User Data Ownership",
-                    desc: "You decide what's stored, what's deleted, and who has access.",
-                  },
-                ].map((item, i) => (
-                  <div key={i} className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      {item.icon}
-                      <h4 className="font-bold text-sm">{item.title}</h4>
+          <div className="mt-12 relative rounded-3xl overflow-hidden border border-white/10 shadow-[0_20px_80px_rgba(0,0,0,0.35)]">
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-transparent to-secondary/10" />
+            <video
+              className="w-full h-full object-cover"
+              src="/videos/panda.mp4"
+              controls
+              poster="/og-image.png"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground mt-6 text-center">
+            “Watch Nuvis crush a live System Design interview (you never see the
+            overlay!)”
+          </p>
+
+          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a href="#pricing" className="btn-primary w-full sm:w-auto">
+              Start Free
+            </a>
+            <a href="#features" className="btn-secondary w-full sm:w-auto">
+              See Killer Features
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Killer Features */}
+      <section id="features" className="relative py-24 bg-background/95">
+        <div className="max-w-6xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-12"
+          >
+            <h2 className="text-4xl sm:text-5xl font-bold">
+              Killer features built for candidates
+            </h2>
+            <p className="text-muted-foreground mt-4 max-w-2xl">
+              Built for candidates first: pre-flight brief, real-time coaching,
+              and post-call debrief. Your personal brain, always on.
+            </p>
+          </motion.div>
+
+          <div className="grid gap-6 md:grid-cols-2">
+            {killerFeatures.map((feature, idx) => (
+              <motion.div
+                key={feature.title}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.08 }}
+                className="glass border-white/10 rounded-3xl p-6 hover:border-primary/40 transition-all"
+              >
+                <div className="flex items-center gap-3 text-primary">
+                  <div className="w-12 h-12 rounded-2xl bg-primary/15 border border-primary/30 flex items-center justify-center">
+                    {feature.icon}
+                  </div>
+                  <h3 className="text-xl font-semibold text-foreground">
+                    {feature.title}
+                  </h3>
+                </div>
+                <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
+                  {feature.bullets.map((bullet) => (
+                    <li key={bullet} className="flex items-start gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-secondary mt-0.5" />
+                      <span>{bullet}</span>
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            ))}
+          </div>
+
+          <div className="mt-12 flex flex-col sm:flex-row items-center gap-4">
+            <a href="#pricing" className="btn-primary w-full sm:w-auto">
+              Start Free Trial
+            </a>
+            <a href="#social-proof" className="btn-secondary w-full sm:w-auto">
+              See Proof
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Social Proof */}
+      <section id="social-proof" className="relative py-24 bg-background">
+        <div className="max-w-7xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-10"
+          >
+            <h2 className="text-4xl sm:text-5xl font-bold">
+              Engineers who landed offers, faster
+            </h2>
+            <p className="text-muted-foreground mt-4">
+              Real candidates. Real offers. Nuvis is the unfair advantage that
+              stays invisible.
+            </p>
+          </motion.div>
+
+          <div className="space-y-6">
+            <div className="overflow-hidden">
+              <div className="marquee">
+                {testimonialLoop.map((t, idx) => (
+                  <div
+                    key={`${t.name}-${idx}`}
+                    className="min-w-[260px] max-w-[320px] glass border-white/10 rounded-3xl p-6"
+                  >
+                    <div className="flex items-center gap-3">
+                      <img
+                        src={t.avatar}
+                        alt={`Portrait of ${t.name}`}
+                        className="w-12 h-12 rounded-full object-cover"
+                        loading="lazy"
+                      />
+                      <div>
+                        <div className="font-semibold">{t.name}</div>
+                        <div className="text-xs text-muted-foreground">
+                          {t.role} @ {t.company}
+                        </div>
+                      </div>
                     </div>
-                    <p className="text-xs text-muted-foreground leading-relaxed">
-                      {item.desc}
-                    </p>
+                    <p className="mt-4 text-sm text-foreground">“{t.quote}”</p>
+                    <a
+                      href={t.link}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="mt-4 inline-flex items-center gap-2 text-xs uppercase tracking-widest text-primary"
+                    >
+                      LinkedIn
+                      <ArrowRight className="w-3 h-3" />
+                    </a>
+                    <div className="mt-4 flex gap-1 text-primary">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <Star key={i} className="w-4 h-4 fill-current" />
+                      ))}
+                    </div>
                   </div>
                 ))}
               </div>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              className="relative"
-            >
-              <div className="glass p-8 rounded-3xl border-primary/20 shadow-2xl relative z-10">
-                <div className="flex items-center justify-between mb-8">
-                  <h3 className="text-lg font-bold">Control Center</h3>
-                  <div className="px-3 py-1 rounded-full bg-primary/20 border border-primary/30 text-[10px] font-bold text-primary uppercase">
-                    Secure
-                  </div>
-                </div>
-
-                <div className="space-y-6">
-                  <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl border border-white/5">
-                    <div className="flex items-center gap-4">
-                      <Mic className="w-5 h-5 text-muted-foreground" />
+            <div className="overflow-hidden">
+              <div className="marquee marquee-reverse">
+                {testimonialLoop.map((t, idx) => (
+                  <div
+                    key={`${t.name}-reverse-${idx}`}
+                    className="min-w-[260px] max-w-[320px] glass border-white/10 rounded-3xl p-6"
+                  >
+                    <div className="flex items-center gap-3">
+                      <img
+                        src={t.avatar}
+                        alt={`Portrait of ${t.name}`}
+                        className="w-12 h-12 rounded-full object-cover"
+                        loading="lazy"
+                      />
                       <div>
-                        <p className="text-sm font-bold">Microphone Access</p>
-                        <p className="text-[10px] text-muted-foreground">
-                          Enabled for current session
-                        </p>
+                        <div className="font-semibold">{t.name}</div>
+                        <div className="text-xs text-muted-foreground">
+                          {t.role} @ {t.company}
+                        </div>
                       </div>
                     </div>
-                    <div className="w-10 h-5 bg-primary rounded-full relative">
-                      <div className="absolute right-0.5 top-0.5 w-4 h-4 bg-white rounded-full" />
+                    <p className="mt-4 text-sm text-foreground">“{t.quote}”</p>
+                    <a
+                      href={t.link}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="mt-4 inline-flex items-center gap-2 text-xs uppercase tracking-widest text-primary"
+                    >
+                      LinkedIn
+                      <ArrowRight className="w-3 h-3" />
+                    </a>
+                    <div className="mt-4 flex gap-1 text-primary">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <Star key={i} className="w-4 h-4 fill-current" />
+                      ))}
                     </div>
                   </div>
-
-                  <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl border border-white/5">
-                    <div className="flex items-center gap-4">
-                      <Layout className="w-5 h-5 text-muted-foreground" />
-                      <div>
-                        <p className="text-sm font-bold">Screen Awareness</p>
-                        <p className="text-[10px] text-muted-foreground">
-                          Only active when app is focused
-                        </p>
-                      </div>
-                    </div>
-                    <div className="w-10 h-5 bg-primary rounded-full relative">
-                      <div className="absolute right-0.5 top-0.5 w-4 h-4 bg-white rounded-full" />
-                    </div>
-                  </div>
-
-                  <div className="pt-4 mt-4 border-t border-white/5">
-                    <button className="w-full py-3 bg-red-500/10 hover:bg-red-500/20 text-red-400 text-xs font-bold rounded-xl border border-red-500/20 transition-colors">
-                      Terminate All Sessions & Delete Cache
-                    </button>
-                  </div>
-                </div>
+                ))}
               </div>
-
-              {/* Decorative elements */}
-              <div className="absolute -top-4 -right-4 w-24 h-24 bg-primary/20 rounded-full blur-3xl -z-0" />
-              <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-primary/10 rounded-full blur-3xl -z-0" />
-            </motion.div>
+            </div>
           </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mt-24 pt-12 border-t border-white/5"
-          >
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-              {[
-                {
-                  icon: <Cpu className="w-6 h-6" />,
-                  label: "On-Device Processing",
-                },
-                {
-                  icon: <Sliders className="w-6 h-6" />,
-                  label: "Transparent Controls",
-                },
-                {
-                  icon: <Ghost className="w-6 h-6" />,
-                  label: "No Background Tracking",
-                },
-                {
-                  icon: <HardDrive className="w-6 h-6" />,
-                  label: "User Data Ownership",
-                },
-              ].map((item, i) => (
-                <div
-                  key={i}
-                  className="flex flex-col items-center gap-3 text-center group"
-                >
-                  <div className="text-muted-foreground group-hover:text-primary transition-colors">
-                    {item.icon}
-                  </div>
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                    {item.label}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </motion.div>
+          <div className="mt-10 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+            <span className="uppercase tracking-[0.2em] text-xs">
+              Used by engineers @
+            </span>
+            {[
+              "Cloudflare",
+              "Stripe",
+              "Shopify",
+              "Booking.com",
+              "Revolut",
+              "Remote",
+              "Glovo",
+              "EPAM",
+            ].map((logo) => (
+              <span
+                key={logo}
+                className="px-4 py-2 rounded-full border border-white/10 bg-white/5"
+              >
+                {logo}
+              </span>
+            ))}
+          </div>
+
+          <div className="mt-10 flex flex-col sm:flex-row items-center gap-4">
+            <a href="#pricing" className="btn-primary w-full sm:w-auto">
+              Start Free
+            </a>
+            <a href="#cta" className="btn-secondary w-full sm:w-auto">
+              Download for Mac
+            </a>
+          </div>
         </div>
       </section>
 
-      {/* Pricing Section */}
-      <section
-        id="pricing"
-        className="relative w-full py-24 bg-background border-t border-white/5"
-      >
-        <div className="max-w-6xl mx-auto">
+      {/* Pricing */}
+      <section id="pricing" className="relative py-24 bg-background/95">
+        <div className="max-w-6xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="mb-12"
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Simple, transparent{" "}
-              <span className="text-primary italic">pricing.</span>
-            </h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Choose the plan that fits your workflow. All plans include our
-              commitment to privacy.
+            <h2 className="text-4xl sm:text-5xl font-bold">Pricing</h2>
+            <p className="text-muted-foreground mt-4">
+              Cheaper than Cluely, better than Otter. Pick your weapon.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
-            {[
-              {
-                name: "Starter",
-                price: "$0",
-                desc: "Perfect for students and casual users.",
-                features: [
-                  "Live captions",
-                  "Basic transcription",
-                  "Device-only storage",
-                  "Community support",
-                ],
-                cta: "Get Started",
-                popular: false,
-              },
-              {
-                name: "Pro",
-                price: "$19",
-                period: "/mo",
-                desc: "Designed for professionals and power users.",
-                features: [
-                  "Real-time transcription",
-                  "Smart highlights",
-                  "Action item extraction",
-                  "Cloud sync (Encrypted)",
-                  "Priority support",
-                ],
-                cta: "Start Free Trial",
-                popular: true,
-              },
-              {
-                name: "Team",
-                price: "Custom",
-                desc: "For organizations with advanced needs.",
-                features: [
-                  "Admin controls",
-                  "Compliance options",
-                  "Team collaboration",
-                  "SSO integration",
-                  "Dedicated manager",
-                ],
-                cta: "Contact Sales",
-                popular: false,
-              },
-            ].map((tier, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className={cn(
-                  "relative glass p-8 rounded-3xl border-white/5 flex flex-col h-full",
-                  tier.popular &&
-                    "border-primary/50 shadow-[0_0_30px_rgba(46,107,77,0.2)] scale-105 z-10",
-                )}
+          <div className="grid gap-6 lg:grid-cols-3">
+            {pricing.map((plan) => (
+              <div
+                key={plan.name}
+                className={`rounded-3xl border p-6 glass ${
+                  plan.highlight ? "highlight-card" : "border-white/10"
+                }`}
               >
-                {tier.popular && (
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-white text-[10px] font-black uppercase tracking-widest px-4 py-1 rounded-full">
-                    Most Popular
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-xl font-semibold">{plan.name}</h3>
+                    <p className="text-sm text-muted-foreground">{plan.desc}</p>
                   </div>
-                )}
-                <div className="mb-8">
-                  <h3 className="text-xl font-bold mb-2">{tier.name}</h3>
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-4xl font-black">{tier.price}</span>
-                    {tier.period && (
-                      <span className="text-muted-foreground">
-                        {tier.period}
-                      </span>
-                    )}
-                  </div>
-                  <p className="text-sm text-muted-foreground mt-4">
-                    {tier.desc}
-                  </p>
+                  {plan.highlight && (
+                    <span className="text-xs uppercase tracking-[0.2em] text-primary border border-primary/50 px-3 py-1 rounded-full">
+                      Most Popular
+                    </span>
+                  )}
                 </div>
-
-                <ul className="space-y-4 mb-8 flex-1">
-                  {tier.features.map((feature, j) => (
-                    <li key={j} className="flex items-center gap-3 text-sm">
-                      <Check className="w-4 h-4 text-primary shrink-0" />
+                <div className="mt-6 text-4xl font-black">{plan.price}</div>
+                <ul className="mt-6 space-y-2 text-sm text-muted-foreground">
+                  {plan.features.map((feature) => (
+                    <li key={feature} className="flex items-start gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-secondary mt-0.5" />
                       <span>{feature}</span>
                     </li>
                   ))}
                 </ul>
-
-                <button
-                  className={cn(
-                    "w-full py-4 rounded-xl font-bold text-sm transition-all duration-300",
-                    tier.popular
-                      ? "bg-primary text-white hover:bg-accent"
-                      : "bg-white/5 text-foreground hover:bg-white/10 border border-white/10",
-                  )}
+                <a
+                  href="#cta"
+                  className={`mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full px-4 py-3 text-sm font-semibold transition-all ${
+                    plan.highlight
+                      ? "bg-primary text-background hover:bg-primary/90"
+                      : "bg-white/5 hover:bg-white/10"
+                  }`}
                 >
-                  {tier.cta}
-                </button>
-              </motion.div>
+                  {plan.cta}
+                  <ArrowRight className="w-4 h-4" />
+                </a>
+              </div>
             ))}
           </div>
 
-          {/* Email Capture */}
+          <div className="mt-10 flex items-center gap-3 text-sm text-secondary">
+            <Sparkles className="w-4 h-4" />
+            Limited-time: 50% off first 3 months on Personal and Power.
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section id="faq" className="relative py-24 bg-background">
+        <div className="max-w-5xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="max-w-3xl mx-auto glass p-8 md:p-12 rounded-3xl border-primary/20 text-center"
+            className="mb-12"
           >
-            <h3 className="text-2xl font-bold mb-4">Stay in the loop</h3>
-            <p className="text-muted-foreground mb-8">
-              Join 10,000+ people getting early access and weekly productivity
-              tips.
-            </p>
-            <form
-              className="flex flex-col sm:flex-row gap-4"
-              onSubmit={(e) => e.preventDefault()}
-            >
-              <input
-                type="email"
-                placeholder="Enter your email"
-                required
-                className="flex-1 bg-white/5 border border-white/10 rounded-xl px-6 py-4 text-foreground focus:outline-none focus:border-primary/50 transition-colors"
-              />
-              <button
-                type="submit"
-                className="btn-primary py-4 px-8 whitespace-nowrap"
-              >
-                Get Early Access
-              </button>
-            </form>
-            <p className="text-[10px] text-muted-foreground mt-4">
-              By subscribing, you agree to our Privacy Policy and Terms of
-              Service.
+            <h2 className="text-4xl sm:text-5xl font-bold">FAQ</h2>
+            <p className="text-muted-foreground mt-4">
+              The short answers. No corporate nonsense.
             </p>
           </motion.div>
+
+          <div className="space-y-4">
+            {faqs.map((faq) => (
+              <details
+                key={faq.q}
+                className="group rounded-2xl border border-white/10 bg-white/5 p-5"
+              >
+                <summary className="cursor-pointer list-none font-semibold flex items-center justify-between">
+                  {faq.q}
+                  <span className="text-primary transition-transform">
+                    +
+                  </span>
+                </summary>
+                <p className="mt-3 text-sm text-muted-foreground">{faq.a}</p>
+              </details>
+            ))}
+          </div>
+
+          <div className="mt-10 flex flex-col sm:flex-row items-center gap-4">
+            <a href="#cta" className="btn-primary w-full sm:w-auto">
+              Start Free
+            </a>
+            <a href="#pricing" className="btn-secondary w-full sm:w-auto">
+              See Pricing
+            </a>
+          </div>
         </div>
       </section>
 
-      <Footer />
+      {/* Final CTA */}
+      <section
+        id="cta"
+        className="relative py-24 bg-gradient-to-br from-primary/20 via-background to-background"
+      >
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="glass border-primary/30 rounded-[32px] p-10 md:p-16 text-center">
+            <h2 className="text-4xl sm:text-5xl font-bold">
+              Start Free Trial — No Card Required
+            </h2>
+            <p className="text-muted-foreground mt-4 max-w-2xl mx-auto">
+              Get the invisible AI interview copilot built for candidates first.
+              Local-first. 100% private. Cheaper than Cluely. Better than Otter.
+            </p>
+            <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+              <a href="#" className="btn-primary w-full sm:w-auto flex items-center gap-2">
+                <Download className="w-5 h-5" />
+                Download for Mac
+              </a>
+              <a href="#" className="btn-secondary w-full sm:w-auto flex items-center gap-2">
+                <Cpu className="w-5 h-5" />
+                Download for Windows
+              </a>
+            </div>
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-xs uppercase tracking-[0.3em] text-muted-foreground">
+              <span>Local-first</span>
+              <span>Invisible</span>
+              <span>15€/mo</span>
+              <span>Built for candidates</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer className="py-16 border-t border-white/10 bg-background">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="glass border-white/10 rounded-3xl p-8 md:p-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+            <div>
+              <div className="text-xs uppercase tracking-[0.3em] text-primary">
+                Ready to pass your next interview?
+              </div>
+              <h3 className="text-2xl md:text-3xl font-semibold mt-3">
+                Download Nuvis and crush your next call.
+              </h3>
+              <p className="text-muted-foreground mt-3 max-w-xl text-sm">
+                Invisible. Local-first. Built for candidates. The fastest way to
+                walk in prepared and walk out with an offer.
+              </p>
+              <a
+                href="#"
+                className="mt-4 inline-flex items-center gap-2 text-xs uppercase tracking-[0.3em] text-primary"
+              >
+                Become an Affiliate
+                <ArrowRight className="w-3 h-3" />
+              </a>
+            </div>
+            <div className="flex flex-col sm:flex-row items-center gap-3">
+              <a href="#" className="btn-primary w-full sm:w-auto">
+                Download for Mac
+              </a>
+              <a href="#" className="btn-secondary w-full sm:w-auto">
+                Download for Windows
+              </a>
+            </div>
+          </div>
+
+          <div className="relative mt-12">
+            <div className="text-[18vw] sm:text-[12vw] md:text-[96px] font-black tracking-tight text-white/5 leading-none">
+              Nuvis
+            </div>
+            <div className="mt-2 h-px w-full bg-white/60" />
+          </div>
+
+          <div className="mt-8 grid gap-8 md:grid-cols-4 text-sm text-muted-foreground">
+            <div className="space-y-3">
+              <div className="flex items-center gap-2 text-foreground font-semibold">
+                <Sparkles className="w-4 h-4 text-primary" />
+                Nuvis
+              </div>
+              <p className="text-sm">
+                The invisible AI interview copilot. Pre-flight brief, real-time
+                coaching, post-call debrief. No cloud by default.
+              </p>
+            </div>
+            <div>
+              <div className="text-xs uppercase tracking-[0.3em] text-primary mb-3">
+                Legal
+              </div>
+              <ul className="space-y-2">
+                <li><a href="#" className="hover:text-primary">Privacy</a></li>
+                <li><a href="#" className="hover:text-primary">Terms</a></li>
+                <li><a href="#" className="hover:text-primary">Security</a></li>
+              </ul>
+            </div>
+            <div>
+              <div className="text-xs uppercase tracking-[0.3em] text-primary mb-3">
+                Pages
+              </div>
+              <ul className="space-y-2">
+                <li><a href="#features" className="hover:text-primary">Features</a></li>
+                <li><a href="#pricing" className="hover:text-primary">Pricing</a></li>
+                <li><a href="#faq" className="hover:text-primary">FAQ</a></li>
+              </ul>
+            </div>
+            <div>
+              <div className="text-xs uppercase tracking-[0.3em] text-primary mb-3">
+                Compare
+              </div>
+              <ul className="space-y-2">
+                <li><a href="#comparison" className="hover:text-primary">Nuvis vs Cluely</a></li>
+                <li><a href="#comparison" className="hover:text-primary">Nuvis vs Interview Coder</a></li>
+                <li><a href="#comparison" className="hover:text-primary">Nuvis vs Otter</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="mt-10 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
+            <div className="flex items-center gap-3">
+              <span>© 2026 Nuvis. All rights reserved.</span>
+              <span className="hidden md:inline">•</span>
+              <span className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-primary" />
+                All systems online
+              </span>
+            </div>
+            <div className="flex items-center gap-4">
+              <a href="#" className="hover:text-primary">Affiliate</a>
+              <a href="#" className="hover:text-primary">Status</a>
+              <a href="#" className="hover:text-primary">Contact</a>
+            </div>
+          </div>
+        </div>
+      </footer>
     </main>
   );
 };

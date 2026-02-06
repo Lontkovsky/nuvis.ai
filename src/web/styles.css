@@ -1,12 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Outfit:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Sora:wght@300..800&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --font-heading: "Outfit", var(--font-sans);
+  --font-sans: "Space Grotesk", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-heading: "Sora", var(--font-sans);
   
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -35,24 +35,29 @@
 }
 
 :root {
-  --background: #050607;
-  --foreground: #EAF2EC;
-  --card: #0B0F0C;
-  --card-foreground: #EAF2EC;
-  --popover: #0B0F0C;
-  --popover-foreground: #EAF2EC;
-  --primary: #2E6B4D;
-  --primary-foreground: #EAF2EC;
-  --secondary: #3B7A57;
-  --secondary-foreground: #EAF2EC;
-  --muted: #0B0F0C;
-  --muted-foreground: #AAB6AE;
-  --accent: #3B7A57;
-  --accent-foreground: #EAF2EC;
-  --destructive: #7f1d1d;
-  --border: rgba(46,107,77,0.35);
-  --input: rgba(46,107,77,0.2);
-  --ring: #2E6B4D;
+  --brand-h: 20;
+  --brand-s: 90%;
+  --brand-l: 55%;
+  --brand: var(--brand-h) var(--brand-s) var(--brand-l);
+
+  --background: #0b0c10;
+  --foreground: #f4f7fa;
+  --card: #0f1117;
+  --card-foreground: #f4f7fa;
+  --popover: #0f1117;
+  --popover-foreground: #f4f7fa;
+  --primary: hsl(var(--brand));
+  --primary-foreground: #0b0c10;
+  --secondary: hsl(var(--brand-h) var(--brand-s) calc(var(--brand-l) + 8%));
+  --secondary-foreground: #0b0c10;
+  --muted: #0f1117;
+  --muted-foreground: #9aa3b2;
+  --accent: hsl(var(--brand-h) var(--brand-s) calc(var(--brand-l) + 16%));
+  --accent-foreground: #0b0c10;
+  --destructive: #d04a4a;
+  --border: hsl(var(--brand-h) var(--brand-s) var(--brand-l) / 0.25);
+  --input: hsl(var(--brand-h) var(--brand-s) var(--brand-l) / 0.18);
+  --ring: hsl(var(--brand-h) var(--brand-s) var(--brand-l));
   --radius: 0.75rem;
 }
 
@@ -72,18 +77,71 @@
   }
 }
 
+details[open] summary span {
+  transform: rotate(45deg);
+}
+
 .glass {
   @apply bg-card/80 backdrop-blur-md border border-border;
 }
 
 .text-gradient {
-  @apply bg-clip-text text-transparent bg-gradient-to-br from-foreground to-muted-foreground;
+  @apply bg-clip-text text-transparent bg-gradient-to-br from-foreground via-white to-muted-foreground;
 }
 
 .btn-primary {
-  @apply bg-primary hover:bg-accent text-foreground px-6 py-3 rounded-full font-medium transition-all duration-300 shadow-[0_0_20px_rgba(46,107,77,0.3)] hover:shadow-[0_0_30px_rgba(46,107,77,0.5)] active:scale-95;
+  @apply bg-primary text-primary-foreground px-6 py-3 rounded-full font-semibold transition-all duration-300 active:scale-95;
+  box-shadow: 0 0 25px hsl(var(--brand-h) var(--brand-s) var(--brand-l) / 0.35);
 }
 
 .btn-secondary {
-  @apply bg-white/5 hover:bg-white/10 text-foreground px-6 py-3 rounded-full font-medium border border-white/10 transition-all duration-300 active:scale-95;
+  @apply bg-white/5 hover:bg-white/10 text-foreground px-6 py-3 rounded-full font-semibold border border-primary/20 transition-all duration-300 active:scale-95;
+}
+
+.btn-primary:hover {
+  box-shadow: 0 0 45px hsl(var(--brand-h) var(--brand-s) var(--brand-l) / 0.55);
+}
+
+.hero-glow {
+  background: radial-gradient(
+    circle at top,
+    hsl(var(--brand-h) var(--brand-s) var(--brand-l) / 0.35),
+    rgba(5, 5, 10, 0.9) 55%
+  );
+}
+
+.marquee {
+  display: flex;
+  gap: 1.5rem;
+  width: max-content;
+  animation: marquee 42s linear infinite;
+}
+
+.marquee-reverse {
+  animation-direction: reverse;
+}
+
+.marquee:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee {
+    animation: none;
+    transform: translateX(0%);
+  }
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.highlight-card {
+  border-color: hsl(var(--brand-h) var(--brand-s) var(--brand-l) / 0.6);
+  box-shadow: 0 0 40px hsl(var(--brand-h) var(--brand-s) var(--brand-l) / 0.25);
 }
